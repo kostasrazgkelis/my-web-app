@@ -14,7 +14,8 @@ class ContactPage extends StatelessWidget {
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 1000),
             child: Column(
-              children: [                // Header Section
+              children: [
+                // Header Section
                 Text(
                   'Get In Touch',
                   style: TextStyle(
@@ -27,14 +28,11 @@ class ContactPage extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   'I\'d love to hear from you. Send me a message and I\'ll respond as soon as possible.',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color(0xFF6E828A),
-                  ),
+                  style: TextStyle(fontSize: 20, color: Color(0xFF6E828A)),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 48),
-                
+
                 // Contact Content
                 Expanded(
                   child: Row(
@@ -44,7 +42,8 @@ class ContactPage extends StatelessWidget {
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [                            Text(
+                          children: [
+                            Text(
                               'Contact Information',
                               style: TextStyle(
                                 fontSize: 28,
@@ -53,28 +52,28 @@ class ContactPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 24),
-                            
+
                             _buildContactItem(
                               Icons.email,
                               'Email',
                               'contact@portfolio.com',
                             ),
                             const SizedBox(width: 24),
-                            
+
                             _buildContactItem(
                               Icons.phone,
                               'Phone',
                               '+1 (555) 123-4567',
                             ),
                             const SizedBox(width: 24),
-                            
+
                             _buildContactItem(
                               Icons.location_on,
                               'Location',
                               'Your City, Country',
                             ),
                             const SizedBox(height: 32),
-                              Text(
+                            Text(
                               'Social Media',
                               style: TextStyle(
                                 fontSize: 24,
@@ -83,7 +82,7 @@ class ContactPage extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            
+
                             Row(
                               children: [
                                 _buildSocialButton(Icons.link, 'LinkedIn'),
@@ -96,9 +95,9 @@ class ContactPage extends StatelessWidget {
                           ],
                         ),
                       ),
-                      
+
                       const SizedBox(width: 48),
-                      
+
                       // Contact Form
                       Expanded(
                         child: Container(
@@ -117,7 +116,8 @@ class ContactPage extends StatelessWidget {
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [                              Text(
+                            children: [
+                              Text(
                                 'Send a Message',
                                 style: TextStyle(
                                   fontSize: 24,
@@ -126,7 +126,7 @@ class ContactPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 24),
-                              
+
                               // Form Fields
                               TextField(
                                 decoration: InputDecoration(
@@ -141,7 +141,7 @@ class ContactPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              
+
                               TextField(
                                 decoration: InputDecoration(
                                   labelText: 'Email Address',
@@ -155,7 +155,7 @@ class ContactPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              
+
                               TextField(
                                 decoration: InputDecoration(
                                   labelText: 'Subject',
@@ -169,7 +169,7 @@ class ContactPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 16),
-                              
+
                               TextField(
                                 maxLines: 4,
                                 decoration: InputDecoration(
@@ -185,18 +185,25 @@ class ContactPage extends StatelessWidget {
                                 ),
                               ),
                               const SizedBox(height: 24),
-                              
+
                               SizedBox(
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text('Message sent successfully!')),
+                                      SnackBar(
+                                        content: Text(
+                                          'Message sent successfully!',
+                                        ),
+                                      ),
                                     );
-                                  },                                  style: ElevatedButton.styleFrom(
+                                  },
+                                  style: ElevatedButton.styleFrom(
                                     backgroundColor: Color(0xFF143A52),
                                     foregroundColor: Colors.white,
-                                    padding: const EdgeInsets.symmetric(vertical: 16),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
@@ -204,7 +211,10 @@ class ContactPage extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text('Send Message', style: TextStyle(fontSize: 16)),
+                                      Text(
+                                        'Send Message',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
                                       const SizedBox(width: 8),
                                       Icon(Icons.send, size: 18),
                                     ],
@@ -225,6 +235,7 @@ class ContactPage extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildContactItem(IconData icon, String title, String value) {
     return Container(
       padding: const EdgeInsets.all(16),

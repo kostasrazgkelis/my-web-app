@@ -26,12 +26,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(      title: 'Portfolio',
+    return MaterialApp.router(
+      title: 'Portfolio',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Color(0xFF143A52),
           brightness: Brightness.light,
-        ),        useMaterial3: true,
+        ),
+        useMaterial3: true,
         textTheme: GoogleFonts.gruppoTextTheme(),
         scaffoldBackgroundColor: Color(0xFFE3EFF3).withOpacity(0.3),
         appBarTheme: AppBarTheme(

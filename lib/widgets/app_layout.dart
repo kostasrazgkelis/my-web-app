@@ -1,27 +1,67 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class AppLayout extends StatelessWidget {
+class AppLayout extends StatefulWidget {
   final Widget child;
   final String title;
 
   const AppLayout({super.key, required this.child, required this.title});
 
   @override
+  State<AppLayout> createState() => _AppLayoutState();
+}
+
+class _AppLayoutState extends State<AppLayout> {
+  final ScrollController _scrollController = ScrollController();
+  bool _showFooter = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scrollController.hasClients) {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      final isAtBottom = currentScroll >= maxScroll - 50; // 50px threshold
+
+      if (isAtBottom != _showFooter) {
+        setState(() {
+          _showFooter = isAtBottom;
+        });
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          // Menu Bar
           _buildMenuBar(context),
-          // Main Content
-          Expanded(child: child),
-          // Footer
-          _buildFooter(),
+          Expanded(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: [widget.child, if (_showFooter) _buildFooter()],
+              ),
+            ),
+          ),
         ],
       ),
     );
-  }  Widget _buildMenuBar(BuildContext context) {
+  }
+
+  Widget _buildMenuBar(BuildContext context) {
     return Container(
       height: 80,
       decoration: BoxDecoration(
@@ -34,12 +74,14 @@ class AppLayout extends StatelessWidget {
             offset: const Offset(0, 2),
           ),
         ],
-      ),      child: Center(
+      ),
+      child: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 1200),
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Row(
-            children: [              // Navigation Menu - left side
+            children: [
+              // Navigation Menu - left side
               Row(
                 children: [
                   _buildMenuText(
@@ -70,8 +112,10 @@ class AppLayout extends StatelessWidget {
                     GoRouterState.of(context).uri.path == '/about',
                   ),
                 ],
-              ),              const SizedBox(width: 200), // Increase gap to move CV button more to the right
-              // Download CV Button - center-right with more rounded design
+              ),
+              // Flexible spacer that adapts to screen size
+              Expanded(flex: 3, child: Container()),
+              // Download CV Button - positioned from center to right
               ElevatedButton(
                 onPressed: () {
                   // TODO: Implement CV download functionality
@@ -82,7 +126,10 @@ class AppLayout extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF143A52),
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 16,
+                  ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -96,13 +143,16 @@ class AppLayout extends StatelessWidget {
                   ],
                 ),
               ),
-              const Spacer(), // Push everything to the left side
+              // Right spacer to keep button from edge
+              Expanded(flex: 1, child: Container()),
             ],
           ),
         ),
       ),
     );
-  }  Widget _buildMenuText(
+  }
+
+  Widget _buildMenuText(
     BuildContext context,
     String label,
     String route,
@@ -147,13 +197,15 @@ class AppLayout extends StatelessWidget {
         children: [
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [              // Portfolio Info
+            children: [
+              // Portfolio Info
               Expanded(
                 flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(                      children: [
+                    Row(
+                      children: [
                         Icon(Icons.person, color: Color(0xFF143A52), size: 24),
                         const SizedBox(width: 8),
                         Text(
@@ -166,7 +218,8 @@ class AppLayout extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),                    Text(
+                    const SizedBox(height: 12),
+                    Text(
                       'Passionate about creating innovative solutions and bringing ideas to life.',
                       style: TextStyle(
                         fontSize: 14,
@@ -181,7 +234,8 @@ class AppLayout extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [                    Text(
+                  children: [
+                    Text(
                       'Navigation',
                       style: TextStyle(
                         fontSize: 16,
@@ -201,7 +255,8 @@ class AppLayout extends StatelessWidget {
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [                    Text(
+                  children: [
+                    Text(
                       'Get in Touch',
                       style: TextStyle(
                         fontSize: 16,
@@ -234,7 +289,8 @@ class AppLayout extends StatelessWidget {
           const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [              Text(
+            children: [
+              Text(
                 '© 2025 Portfolio. All rights reserved.',
                 style: TextStyle(fontSize: 12, color: Colors.grey[500]),
               ),

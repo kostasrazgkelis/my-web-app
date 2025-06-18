@@ -20,7 +20,12 @@ class AboutPage extends StatelessWidget {
                 // Header
                 Center(
                   child: Column(
-                    children: [                      Icon(Icons.info_outline, size: 64, color: Color(0xFF143A52)),
+                    children: [
+                      Icon(
+                        Icons.info_outline,
+                        size: 64,
+                        color: Color(0xFF143A52),
+                      ),
                       const SizedBox(height: 24),
                       Text(
                         'About Me',
@@ -33,7 +38,10 @@ class AboutPage extends StatelessWidget {
                       const SizedBox(height: 16),
                       Text(
                         'Learn more about my journey and passion',
-                        style: TextStyle(fontSize: 20, color: Color(0xFF6E828A)),
+                        style: TextStyle(
+                          fontSize: 20,
+                          color: Color(0xFF6E828A),
+                        ),
                       ),
                     ],
                   ),
@@ -56,7 +64,8 @@ class AboutPage extends StatelessWidget {
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [                      Text(
+                    children: [
+                      Text(
                         'My Story',
                         style: TextStyle(
                           fontSize: 28,
@@ -91,7 +100,8 @@ class AboutPage extends StatelessWidget {
                           height: 1.6,
                         ),
                       ),
-                      const SizedBox(height: 24),                      Text(
+                      const SizedBox(height: 24),
+                      Text(
                         'Why Flutter?',
                         style: TextStyle(
                           fontSize: 24,
@@ -125,10 +135,14 @@ class AboutPage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
-                          ),                          child: Row(
+                          ),
+                          child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text('Back to Home', style: TextStyle(fontSize: 16)),
+                              Text(
+                                'Back to Home',
+                                style: TextStyle(fontSize: 16),
+                              ),
                               const SizedBox(width: 8),
                               Icon(Icons.home, size: 18),
                             ],

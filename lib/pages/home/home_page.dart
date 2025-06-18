@@ -5,6 +5,42 @@ import 'package:test_web_app/widgets/app_layout.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  // Data dictionaries
+  static const Map<String, String> personalInfo = {
+    'name': 'John Doe',
+    'title': 'Full Stack Developer & UI/UX Designer',
+    'description':
+        'Passionate about creating innovative digital solutions and bringing ideas to life through code.',
+  };
+
+  static const List<Map<String, dynamic>> services = [
+    {
+      'icon': Icons.web,
+      'title': 'Web Development',
+      'description':
+          'Creating responsive and modern web applications using the latest technologies and frameworks.',
+    },
+    {
+      'icon': Icons.mobile_friendly,
+      'title': 'Mobile Development',
+      'description':
+          'Building cross-platform mobile applications with Flutter for iOS and Android.',
+    },
+    {
+      'icon': Icons.design_services,
+      'title': 'UI/UX Design',
+      'description':
+          'Designing intuitive and beautiful user interfaces that provide excellent user experiences.',
+    },
+  ];
+
+  static const List<Map<String, String>> statistics = [
+    {'number': '50+', 'label': 'Projects Completed'},
+    {'number': '3+', 'label': 'Years Experience'},
+    {'number': '20+', 'label': 'Happy Clients'},
+    {'number': '5+', 'label': 'Technologies'},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return AppLayout(
@@ -12,7 +48,8 @@ class HomePage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(48),
         child: Column(
-          children: [            // Hero Section
+          children: [
+            // Hero Section
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(64),
@@ -34,15 +71,11 @@ class HomePage extends StatelessWidget {
                       color: Color(0xFF143A52),
                       borderRadius: BorderRadius.circular(60),
                     ),
-                    child: Icon(
-                      Icons.person,
-                      size: 60,
-                      color: Colors.white,
-                    ),
+                    child: Icon(Icons.person, size: 60, color: Colors.white),
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'John Doe',
+                    personalInfo['name']!,
                     style: TextStyle(
                       fontSize: 48,
                       fontWeight: FontWeight.bold,
@@ -52,7 +85,7 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Full Stack Developer & UI/UX Designer',
+                    personalInfo['title']!,
                     style: TextStyle(
                       fontSize: 24,
                       color: Color(0xFF6E828A),
@@ -62,7 +95,7 @@ class HomePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Passionate about creating innovative digital solutions and bringing ideas to life through code.',
+                    personalInfo['description']!,
                     style: TextStyle(
                       fontSize: 18,
                       color: Color(0xFF6E828A),
@@ -92,7 +125,10 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Get In Touch', style: TextStyle(fontSize: 16)),
+                            Text(
+                              'Get In Touch',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             const SizedBox(width: 8),
                             Icon(Icons.arrow_forward, size: 18),
                           ],
@@ -118,7 +154,10 @@ class HomePage extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('View My Work', style: TextStyle(fontSize: 16)),
+                            Text(
+                              'View My Work',
+                              style: TextStyle(fontSize: 16),
+                            ),
                             const SizedBox(width: 8),
                             Icon(Icons.work, size: 18),
                           ],
@@ -130,7 +169,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 64),
-              // What I Do Section
+            // What I Do Section
             Text(
               'What I Do',
               style: TextStyle(
@@ -141,37 +180,28 @@ class HomePage extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 32),
-            
+
             // Services/Skills Section
             Row(
               children: [
-                Expanded(
-                  child: _buildServiceCard(
-                    Icons.web,
-                    'Web Development',
-                    'Creating responsive and modern web applications using the latest technologies and frameworks.',
-                  ),
-                ),
-                const SizedBox(width: 32),
-                Expanded(
-                  child: _buildServiceCard(
-                    Icons.mobile_friendly,
-                    'Mobile Development',
-                    'Building cross-platform mobile applications with Flutter for iOS and Android.',
-                  ),
-                ),
-                const SizedBox(width: 32),
-                Expanded(
-                  child: _buildServiceCard(
-                    Icons.design_services,
-                    'UI/UX Design',
-                    'Designing intuitive and beautiful user interfaces that provide excellent user experiences.',
-                  ),
-                ),
+                ...services
+                    .map(
+                      (service) => [
+                        Expanded(
+                          child: _buildServiceCard(
+                            service['icon'],
+                            service['title'],
+                            service['description'],
+                          ),
+                        ),
+                        if (service != services.last) const SizedBox(width: 32),
+                      ],
+                    )
+                    .expand((widgets) => widgets),
               ],
             ),
             const SizedBox(height: 64),
-              // Quick Stats
+            // Quick Stats
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(32),
@@ -181,12 +211,11 @@ class HomePage extends StatelessWidget {
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildStatItem('50+', 'Projects Completed'),
-                  _buildStatItem('3+', 'Years Experience'),
-                  _buildStatItem('20+', 'Happy Clients'),
-                  _buildStatItem('5+', 'Technologies'),
-                ],
+                children: statistics
+                    .map(
+                      (stat) => _buildStatItem(stat['number']!, stat['label']!),
+                    )
+                    .toList(),
               ),
             ),
           ],
@@ -194,6 +223,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildServiceCard(IconData icon, String title, String description) {
     return Container(
       padding: const EdgeInsets.all(32),
@@ -236,6 +266,7 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+
   Widget _buildStatItem(String number, String label) {
     return Column(
       children: [
@@ -250,10 +281,7 @@ class HomePage extends StatelessWidget {
         const SizedBox(height: 8),
         Text(
           label,
-          style: TextStyle(
-            fontSize: 14,
-            color: Color(0xFFCDE3EB),
-          ),
+          style: TextStyle(fontSize: 14, color: Color(0xFFCDE3EB)),
           textAlign: TextAlign.center,
         ),
       ],
