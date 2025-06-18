@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:test_web_app/widgets/app_layout.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CareerPage extends StatelessWidget {
   const CareerPage({super.key});
+
+  // Helper function to launch URLs
+  Future<void> _launchUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $urlString');
+    }
+  }
 
   // Data dictionaries
   static const List<Map<String, dynamic>> professionalExperience = [
@@ -72,6 +81,50 @@ class CareerPage extends StatelessWidget {
     },
   ];
 
+  static const List<Map<String, String>> publications = [
+    {
+      'title':
+          'Modern Flutter Development: Best Practices for Web Applications',
+      'publisher': 'IEEE Computer Society',
+      'year': '2023',
+      'url': 'https://example.com/publication1',
+    },
+    {
+      'title':
+          'Cross-Platform Mobile Development with Flutter: A Comprehensive Study',
+      'publisher': 'ACM Digital Library',
+      'year': '2022',
+      'url': 'https://example.com/publication2',
+    },
+    {
+      'title': 'Responsive Web Design Patterns in Modern Frameworks',
+      'publisher': 'Journal of Web Development',
+      'year': '2021',
+      'url': 'https://example.com/publication3',
+    },
+  ];
+
+  static const List<Map<String, String>> funProjects = [
+    {
+      'title': 'Portfolio Weather App',
+      'description':
+          'A beautiful weather application built with Flutter featuring real-time weather data, animated backgrounds, and location-based forecasts.',
+      'url': 'https://github.com/yourprofile/weather-app',
+    },
+    {
+      'title': 'Recipe Finder',
+      'description':
+          'Interactive recipe discovery platform with ingredient-based search, meal planning, and nutritional information using modern web technologies.',
+      'url': 'https://github.com/yourprofile/recipe-finder',
+    },
+    {
+      'title': 'Task Management Dashboard',
+      'description':
+          'Collaborative task management tool with real-time updates, team collaboration features, and productivity analytics.',
+      'url': 'https://github.com/yourprofile/task-dashboard',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return AppLayout(
@@ -82,26 +135,36 @@ class CareerPage extends StatelessWidget {
           children: [
             // Header Section
             _buildHeader(),
-            const SizedBox(height: 48),
-
-            // Main Content - Split Layout
+            const SizedBox(height: 48), // Main Content - Split Layout
             Container(
               constraints: const BoxConstraints(maxWidth: 1200),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Left Half - Professional Experience
-                  Expanded(child: _buildProfessionalExperience()),
-                  const SizedBox(width: 48),
-                  // Right Half - Education and Languages
+                  // Left Half - Professional Experience and Publications
                   Expanded(
                     child: Column(
                       children: [
-                        // Top Half - Education
+                        _buildProfessionalExperience(),
+                        const SizedBox(height: 32),
+                        _buildPublicationsSection(),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 48,
+                  ), // Right Half - Education, Languages, and Fun Projects
+                  Expanded(
+                    child: Column(
+                      children: [
+                        // Education
                         _buildEducationSection(),
-                        const SizedBox(height: 48),
-                        // Bottom Half - Languages
+                        const SizedBox(height: 32),
+                        // Languages
                         _buildLanguagesSection(),
+                        const SizedBox(height: 32),
+                        // Fun Projects
+                        _buildFunProjectsSection(),
                       ],
                     ),
                   ),
@@ -118,7 +181,7 @@ class CareerPage extends StatelessWidget {
     return Column(
       children: [
         Text(
-          'Professional Profile',
+          'My Carreer Journey',
           style: TextStyle(
             fontSize: 48,
             fontWeight: FontWeight.bold,
@@ -126,7 +189,7 @@ class CareerPage extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Text(
           'Experience, Education & Skills Overview',
           style: TextStyle(fontSize: 20, color: Color(0xFF6E828A)),
@@ -243,6 +306,82 @@ class CareerPage extends StatelessWidget {
             (language) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _buildLanguageCard(language),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPublicationsSection() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Academic Publications',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF143A52),
+            ),
+          ),
+          const SizedBox(height: 24),
+          ...publications.map(
+            (publication) => Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildPublicationCard(publication),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFunProjectsSection() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Fun Projects',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF143A52),
+            ),
+          ),
+          const SizedBox(height: 24),
+          ...funProjects.map(
+            (project) => Padding(
+              padding: const EdgeInsets.only(bottom: 16),
+              child: _buildFunProjectCard(project),
             ),
           ),
         ],
@@ -437,6 +576,146 @@ class CareerPage extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPublicationCard(Map<String, String> publication) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFE3EFF3).withOpacity(0.5),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Color(0xFF143A52).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(Icons.article, color: Color(0xFF143A52), size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _launchUrl(publication['url']!);
+                  },
+                  child: Text(
+                    publication['title']!,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF143A52),
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  publication['publisher']!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF6E828A),
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Row(
+                  children: [
+                    Text(
+                      publication['year']!,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF6E828A),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFunProjectCard(Map<String, String> project) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Color(0xFFCDE3EB).withOpacity(0.3),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Color(0xFF143A52).withOpacity(0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Icon(Icons.code, color: Color(0xFF143A52), size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    _launchUrl(project['url']!);
+                  },
+                  child: Text(
+                    project['title']!,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF143A52),
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  project['description']!,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF6E828A),
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
+                    const SizedBox(width: 4),
+                    Text(
+                      'View Project',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Color(0xFF6E828A),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

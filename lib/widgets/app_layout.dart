@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AppLayout extends StatefulWidget {
   final Widget child;
@@ -12,33 +13,11 @@ class AppLayout extends StatefulWidget {
 }
 
 class _AppLayoutState extends State<AppLayout> {
-  final ScrollController _scrollController = ScrollController();
-  bool _showFooter = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.removeListener(_onScroll);
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  void _onScroll() {
-    if (_scrollController.hasClients) {
-      final maxScroll = _scrollController.position.maxScrollExtent;
-      final currentScroll = _scrollController.position.pixels;
-      final isAtBottom = currentScroll >= maxScroll - 50; // 50px threshold
-
-      if (isAtBottom != _showFooter) {
-        setState(() {
-          _showFooter = isAtBottom;
-        });
-      }
+  // Helper function to launch URLs
+  Future<void> _launchUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $urlString');
     }
   }
 
@@ -48,14 +27,7 @@ class _AppLayoutState extends State<AppLayout> {
       body: Column(
         children: [
           _buildMenuBar(context),
-          Expanded(
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              child: Column(
-                children: [widget.child, if (_showFooter) _buildFooter()],
-              ),
-            ),
-          ),
+          Expanded(child: SingleChildScrollView(child: widget.child)),
         ],
       ),
     );
@@ -114,14 +86,14 @@ class _AppLayoutState extends State<AppLayout> {
                 ],
               ),
               // Flexible spacer that adapts to screen size
-              Expanded(flex: 3, child: Container()),
-              // Download CV Button - positioned from center to right
+              Expanded(
+                flex: 3,
+                child: Container(),
+              ), // Download CV Button - positioned from center to right
               ElevatedButton(
                 onPressed: () {
-                  // TODO: Implement CV download functionality
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('CV download feature coming soon!')),
-                  );
+                  // Launch URL to download CV (replace with your actual CV URL)
+                  _launchUrl('https://example.com/your-cv.pdf');
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Color(0xFF143A52),
@@ -182,161 +154,6 @@ class _AppLayoutState extends State<AppLayout> {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-      decoration: BoxDecoration(
-        color: Colors.grey[50],
-        border: Border(top: BorderSide(color: Colors.grey[200]!, width: 1)),
-      ),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Portfolio Info
-              Expanded(
-                flex: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.person, color: Color(0xFF143A52), size: 24),
-                        const SizedBox(width: 8),
-                        Text(
-                          'Portfolio',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF143A52),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Passionate about creating innovative solutions and bringing ideas to life.',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Color(0xFF6E828A),
-                        height: 1.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // Navigation
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Navigation',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF143A52),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    _buildFooterLink('Home', '/'),
-                    _buildFooterLink('Career', '/career'),
-                    _buildFooterLink('Contact', '/contact'),
-                    _buildFooterLink('About', '/about'),
-                  ],
-                ),
-              ),
-              // Contact Info
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Get in Touch',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF143A52),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Text(
-                      'Email: contact@portfolio.com',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'LinkedIn: /in/yourprofile',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'GitHub: /yourusername',
-                      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Divider(color: Colors.grey[300]),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '© 2025 Portfolio. All rights reserved.',
-                style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-              ),
-              Row(
-                children: [
-                  _buildSocialIcon(Icons.link), // LinkedIn
-                  const SizedBox(width: 16),
-                  _buildSocialIcon(Icons.code), // GitHub
-                  const SizedBox(width: 16),
-                  _buildSocialIcon(Icons.email), // Email
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFooterLink(String label, String route) {
-    return Builder(
-      builder: (context) => InkWell(
-        onTap: () => context.go(route),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.blue[600],
-              decoration: TextDecoration.underline,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSocialIcon(IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Icon(icon, size: 16, color: Colors.grey[600]),
     );
   }
 }
