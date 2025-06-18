@@ -3,7 +3,6 @@ import 'package:test_web_app/widgets/app_layout.dart';
 
 class ContactPage extends StatelessWidget {
   const ContactPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return AppLayout(
@@ -34,10 +33,9 @@ class ContactPage extends StatelessWidget {
                 const SizedBox(height: 48),
 
                 // Contact Content
-                Expanded(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                       // Contact Information
                       Expanded(
                         child: Column(
@@ -58,14 +56,14 @@ class ContactPage extends StatelessWidget {
                               'Email',
                               'contact@portfolio.com',
                             ),
-                            const SizedBox(width: 24),
+                            const SizedBox(height: 24),
 
                             _buildContactItem(
                               Icons.phone,
                               'Phone',
                               '+1 (555) 123-4567',
                             ),
-                            const SizedBox(width: 24),
+                            const SizedBox(height: 24),
 
                             _buildContactItem(
                               Icons.location_on,
@@ -136,7 +134,7 @@ class ContactPage extends StatelessWidget {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(color: Colors.blue),
+                                    borderSide: BorderSide(color: Color(0xFF143A52)),
                                   ),
                                 ),
                               ),
@@ -150,7 +148,7 @@ class ContactPage extends StatelessWidget {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(color: Colors.blue),
+                                    borderSide: BorderSide(color: Color(0xFF143A52)),
                                   ),
                                 ),
                               ),
@@ -164,7 +162,7 @@ class ContactPage extends StatelessWidget {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(color: Colors.blue),
+                                    borderSide: BorderSide(color: Color(0xFF143A52)),
                                   ),
                                 ),
                               ),
@@ -180,7 +178,7 @@ class ContactPage extends StatelessWidget {
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(8),
-                                    borderSide: BorderSide(color: Colors.blue),
+                                    borderSide: BorderSide(color: Color(0xFF143A52)),
                                   ),
                                 ),
                               ),
@@ -222,12 +220,10 @@ class ContactPage extends StatelessWidget {
                                 ),
                               ),
                             ],
-                          ),
-                        ),
+                          ),                        ),
                       ),
                     ],
                   ),
-                ),
               ],
             ),
           ),
@@ -288,13 +284,13 @@ class ContactPage extends StatelessWidget {
       icon: Icon(icon, size: 18),
       label: Text(platform),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.blue.withOpacity(0.1),
-        foregroundColor: Colors.blue,
+        backgroundColor: Color(0xFF6E828A).withOpacity(0.1),
+        foregroundColor: Color(0xFF143A52),
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
-          side: BorderSide(color: Colors.blue.withOpacity(0.3)),
+          side: BorderSide(color: Color(0xFF6E828A).withOpacity(0.3)),
         ),
       ),
     );
