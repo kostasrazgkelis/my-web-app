@@ -125,6 +125,21 @@ class CareerPage extends StatelessWidget {
     },
   ];
 
+  static const List<Map<String, dynamic>> toolsAndFrameworks = [
+    {'name': 'Flutter', 'icon': Icons.flutter_dash},
+    {'name': 'React', 'icon': Icons.web},
+    {'name': 'Node.js', 'icon': Icons.dns},
+    {'name': 'Python', 'icon': Icons.code},
+    {'name': 'JavaScript', 'icon': Icons.javascript},
+    {'name': 'TypeScript', 'icon': Icons.code_outlined},
+    {'name': 'Firebase', 'icon': Icons.cloud},
+    {'name': 'Git', 'icon': Icons.source},
+    {'name': 'Docker', 'icon': Icons.inventory_2},
+    {'name': 'MongoDB', 'icon': Icons.storage},
+    {'name': 'PostgreSQL', 'icon': Icons.table_chart},
+    {'name': 'AWS', 'icon': Icons.cloud_upload},
+  ];
+
   @override
   Widget build(BuildContext context) {
     return AppLayout(
@@ -141,13 +156,15 @@ class CareerPage extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Left Half - Professional Experience and Publications
+                  // Left Half - Professional Experience, Publications, and Tools
                   Expanded(
                     child: Column(
                       children: [
                         _buildProfessionalExperience(),
                         const SizedBox(height: 32),
                         _buildPublicationsSection(),
+                        const SizedBox(height: 32),
+                        _buildToolsAndFrameworksSection(),
                       ],
                     ),
                   ),
@@ -382,6 +399,71 @@ class CareerPage extends StatelessWidget {
             (project) => Padding(
               padding: const EdgeInsets.only(bottom: 16),
               child: _buildFunProjectCard(project),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToolsAndFrameworksSection() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Tools & Frameworks',
+            style: TextStyle(
+              fontSize: 28,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF143A52),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: toolsAndFrameworks
+                .map((tool) => _buildToolChip(tool))
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToolChip(Map<String, dynamic> tool) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: Color(0xFFCDE3EB).withOpacity(0.3),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Color(0xFF143A52).withOpacity(0.2), width: 1),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(tool['icon'], color: Color(0xFF143A52), size: 18),
+          const SizedBox(width: 8),
+          Text(
+            tool['name'],
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: Color(0xFF143A52),
             ),
           ),
         ],
