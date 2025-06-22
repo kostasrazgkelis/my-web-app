@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:typewritertext/typewritertext.dart';
 
 class FunProjectCard extends StatelessWidget {
   final Map<String, String> project;
@@ -35,41 +36,55 @@ class FunProjectCard extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Expanded(
+            flex: 1,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () {
                     _launchUrl(project['url']!);
                   },
-                  child: Text(
+                  child: TypeWriter.text(
                     project['title']!,
+                    duration: const Duration(milliseconds: 50),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF143A52),
                       decoration: TextDecoration.underline,
+                      height: 1.3,
                     ),
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(
+                TypeWriter.text(
                   project['description']!,
+                  duration: const Duration(milliseconds: 30),
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 14,
+                    fontSize: 13,
                     color: Color(0xFF6E828A),
                     height: 1.4,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
                     const SizedBox(width: 4),
-                    Text(
+                    TypeWriter.text(
                       'View Project',
+                      duration: const Duration(milliseconds: 40),
+                      maintainSize: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         color: Color(0xFF6E828A),
                         fontWeight: FontWeight.w500,
                       ),

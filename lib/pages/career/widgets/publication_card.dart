@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:typewritertext/typewritertext.dart';
 
 class PublicationCard extends StatelessWidget {
   final Map<String, String> publication;
@@ -24,6 +25,7 @@ class PublicationCard extends StatelessWidget {
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        spacing: 8,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
@@ -35,44 +37,58 @@ class PublicationCard extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Expanded(
+            flex: 1,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
                 GestureDetector(
                   onTap: () {
                     _launchUrl(publication['url']!);
                   },
-                  child: Text(
+                  child: TypeWriter.text(
                     publication['title']!,
+                    duration: const Duration(milliseconds: 50),
+                    maxLines: 4,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                       color: Color(0xFF143A52),
                       decoration: TextDecoration.underline,
+                      height: 1.3,
                     ),
                   ),
                 ),
-                const SizedBox(height: 4),
-                Text(
+                const SizedBox(height: 6),
+                TypeWriter.text(
                   publication['publisher']!,
+                  duration: const Duration(milliseconds: 40),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF6E828A),
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 2),
+                const SizedBox(height: 4),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
+                    TypeWriter.text(
                       publication['year']!,
+                      duration: const Duration(milliseconds: 30),
+                      maintainSize: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         color: Color(0xFF6E828A),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    const SizedBox(width: 4),
                     Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
                   ],
                 ),

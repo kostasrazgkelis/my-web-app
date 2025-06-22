@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typewritertext/typewritertext.dart';
 
 class LanguageCard extends StatelessWidget {
   final Map<String, String> language;
@@ -26,20 +27,29 @@ class LanguageCard extends StatelessWidget {
           ),
           const SizedBox(width: 16),
           Expanded(
+            flex: 1,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                TypeWriter.text(
                   language['language']!,
+                  duration: const Duration(milliseconds: 50),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF143A52),
+                    height: 1.3,
                   ),
                 ),
                 const SizedBox(height: 2),
-                Text(
+                TypeWriter.text(
                   language['degree']!,
+                  duration: const Duration(milliseconds: 40),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 14,
                     color: Color(0xFF6E828A),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:typewritertext/typewritertext.dart';
 
 class DegreeCard extends StatelessWidget {
   final Map<String, String> degree;
@@ -21,45 +22,60 @@ class DegreeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Color(0xFFE3EFF3).withOpacity(0.5),
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
               color: Color(0xFF143A52).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(_getIcon(), color: Color(0xFF143A52), size: 20),
+            child: Icon(_getIcon(), color: Color(0xFF143A52), size: 22),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 24),
           Expanded(
+            flex: 1,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 8,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
+                TypeWriter.text(
                   degree['title']!,
+                  duration: const Duration(milliseconds: 100),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF143A52),
+                    height: 1.3,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
+                TypeWriter.text(
                   degree['institution']!,
-                  style: TextStyle(fontSize: 14, color: Color(0xFF6E828A)),
+                  duration: const Duration(milliseconds: 30),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 13, color: Color(0xFF6E828A)),
                 ),
-                const SizedBox(height: 2),
-                Text(
+                TypeWriter.text(
                   '${degree['yearStart']!} - ${degree['yearEnd']!}',
+                  duration: const Duration(milliseconds: 40),
+                  maintainSize: true,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     color: Color(0xFF6E828A),
                     fontWeight: FontWeight.w500,
                   ),
