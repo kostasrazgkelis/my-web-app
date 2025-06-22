@@ -2,10 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:typewritertext/typewritertext.dart';
 
-class PublicationCard extends StatelessWidget {
+class PublicationCard extends StatefulWidget {
   final Map<String, String> publication;
+  final VoidCallback? onAnimationComplete;
 
-  const PublicationCard({super.key, required this.publication});
+  const PublicationCard({
+    super.key,
+    required this.publication,
+    this.onAnimationComplete,
+  });
+
+  @override
+  State<PublicationCard> createState() => _PublicationCardState();
+}
+
+class _PublicationCardState extends State<PublicationCard> {
+  bool showTitle = false;
+  bool showPublisher = false;
+  bool showYear = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start title animation immediately
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => showTitle = true);
+    });
+  }
+
+  void _onTitleComplete(TypeWriterValue value) {
+    if (mounted) setState(() => showPublisher = true);
+  }
+
+  void _onPublisherComplete(TypeWriterValue value) {
+    if (mounted) setState(() => showYear = true);
+  }
+
+  void _onYearComplete(TypeWriterValue value) {
+    // Notify parent that this card's animation is complete
+    if (widget.onAnimationComplete != null) {
+      widget.onAnimationComplete!();
+    }
+  }
 
   Future<void> _launchUrl(String urlString) async {
     final Uri url = Uri.parse(urlString);
@@ -42,56 +80,62 @@ class PublicationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    _launchUrl(publication['url']!);
-                  },
-                  child: TypeWriter.text(
-                    publication['title']!,
-                    duration: const Duration(milliseconds: 50),
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF143A52),
-                      decoration: TextDecoration.underline,
-                      height: 1.3,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                TypeWriter.text(
-                  publication['publisher']!,
-                  duration: const Duration(milliseconds: 40),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Color(0xFF6E828A),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TypeWriter.text(
-                      publication['year']!,
-                      duration: const Duration(milliseconds: 30),
-                      maintainSize: true,
-                      maxLines: 1,
+                if (showTitle)
+                  GestureDetector(
+                    onTap: () {
+                      _launchUrl(widget.publication['url']!);
+                    },
+                    child: TypeWriter.text(
+                      widget.publication['title']!,
+                      duration: const Duration(milliseconds: 1),
+                      maxLines: 4,
                       overflow: TextOverflow.ellipsis,
+                      onFinished: _onTitleComplete,
                       style: TextStyle(
-                        fontSize: 10,
-                        color: Color(0xFF6E828A),
-                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF143A52),
+                        decoration: TextDecoration.underline,
+                        height: 1.3,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
-                  ],
-                ),
+                  ),
+                const SizedBox(height: 6),
+                if (showPublisher)
+                  TypeWriter.text(
+                    widget.publication['publisher']!,
+                    duration: const Duration(milliseconds: 1),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    onFinished: _onPublisherComplete,
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Color(0xFF6E828A),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                const SizedBox(height: 4),
+                if (showYear)
+                  Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TypeWriter.text(
+                        widget.publication['year']!,
+                        duration: const Duration(milliseconds: 1),
+                        maintainSize: true,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        onFinished: _onYearComplete,
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF6E828A),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
+                    ],
+                  ),
               ],
             ),
           ),

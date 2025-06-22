@@ -1,10 +1,48 @@
 import 'package:flutter/material.dart';
 import 'publication_card.dart';
 
-class PublicationsSection extends StatelessWidget {
+class PublicationsSection extends StatefulWidget {
   final List<Map<String, String>> publications;
+  final VoidCallback? onSectionComplete;
 
-  const PublicationsSection({super.key, required this.publications});
+  const PublicationsSection({
+    super.key,
+    required this.publications,
+    this.onSectionComplete,
+  });
+
+  @override
+  State<PublicationsSection> createState() => _PublicationsSectionState();
+}
+
+class _PublicationsSectionState extends State<PublicationsSection> {
+  List<bool> showCards = [];
+  int currentCardIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    showCards = List.filled(widget.publications.length, false);
+    _startSequentialAnimation();
+  }
+
+  void _startSequentialAnimation() async {
+    // Show first card immediately
+    if (currentCardIndex < widget.publications.length && mounted) {
+      setState(() => showCards[currentCardIndex] = true);
+    }
+  }
+
+  void _onCardAnimationComplete() {
+    // Move to next card when current one finishes
+    currentCardIndex++;
+    if (currentCardIndex < widget.publications.length && mounted) {
+      setState(() => showCards[currentCardIndex] = true);
+    } else if (widget.onSectionComplete != null) {
+      // All cards in this section are complete
+      widget.onSectionComplete!();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +72,21 @@ class PublicationsSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          ...publications.map(
-            (publication) => Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: PublicationCard(publication: publication),
-            ),
-          ),
+          ...widget.publications.asMap().entries.map((entry) {
+            int index = entry.key;
+            Map<String, String> publication = entry.value;
+            return showCards[index]
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: PublicationCard(
+                      publication: publication,
+                      onAnimationComplete: index == currentCardIndex
+                          ? _onCardAnimationComplete
+                          : null,
+                    ),
+                  )
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

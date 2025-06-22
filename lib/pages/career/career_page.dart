@@ -7,13 +7,74 @@ import 'widgets/publications_section.dart';
 import 'widgets/fun_projects_section.dart';
 import 'widgets/tools_and_frameworks_section.dart';
 
-class CareerPage extends StatelessWidget {
+class CareerPage extends StatefulWidget {
   const CareerPage({super.key});
+
+  @override
+  State<CareerPage> createState() => _CareerPageState();
+}
+
+class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
+  late List<AnimationController> _controllers;
+  late List<Animation<double>> _animations;
+  int currentSectionIndex = 0;
+  List<bool> showSections = [];
+
+  @override
+  void initState() {
+    super.initState();
+    showSections = List.filled(6, false); // 6 sections total
+
+    _controllers = List.generate(
+      6, // Number of sections
+      (index) => AnimationController(
+        duration: const Duration(
+          milliseconds: 600,
+        ), // Faster entrance animation
+        vsync: this,
+      ),
+    );
+
+    _animations = _controllers
+        .map(
+          (controller) => Tween<double>(begin: 0.0, end: 1.0).animate(
+            CurvedAnimation(parent: controller, curve: Curves.easeInOut),
+          ),
+        )
+        .toList();
+
+    _startAnimations();
+  }
+
+  void _startAnimations() async {
+    // Start first section immediately
+    if (currentSectionIndex < showSections.length && mounted) {
+      setState(() => showSections[currentSectionIndex] = true);
+      _controllers[currentSectionIndex].forward();
+    }
+  }
+
+  void _onSectionComplete() {
+    // Move to next section when current one finishes
+    currentSectionIndex++;
+    if (currentSectionIndex < showSections.length && mounted) {
+      setState(() => showSections[currentSectionIndex] = true);
+      _controllers[currentSectionIndex].forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _controllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   // Data dictionaries
   static const List<Map<String, dynamic>> professionalExperience = [
     {
-      'title': 'Senior Software Develop23er',
+      'title': 'Senior Software Developer',
       'company': 'Tech Innovations Ltd.',
       'period': '2022 - Present',
       'description':
@@ -37,6 +98,7 @@ class CareerPage extends StatelessWidget {
       'icon': Icons.school,
     },
   ];
+
   static const List<Map<String, String>> degrees = [
     {
       'title': 'Master of Computer Science',
@@ -63,6 +125,7 @@ class CareerPage extends StatelessWidget {
       'type': 'Certificate',
     },
   ];
+
   static const List<Map<String, String>> languages = [
     {
       'language': 'English',
@@ -77,6 +140,7 @@ class CareerPage extends StatelessWidget {
       'degree': 'Advanced Proficiency',
     },
   ];
+
   static const List<Map<String, String>> publications = [
     {
       'title':
@@ -99,6 +163,7 @@ class CareerPage extends StatelessWidget {
       'url': 'https://example.com/publication3',
     },
   ];
+
   static const List<Map<String, String>> funProjects = [
     {
       'title': 'Portfolio Weather App',
@@ -119,6 +184,7 @@ class CareerPage extends StatelessWidget {
       'url': 'https://github.com/yourprofile/task-dashboard',
     },
   ];
+
   static const List<Map<String, dynamic>> toolsAndFrameworks = [
     {'name': 'Flutter', 'icon': Icons.flutter_dash},
     {'name': 'React', 'icon': Icons.web},
@@ -144,25 +210,86 @@ class CareerPage extends StatelessWidget {
           children: [
             // Header Section
             _buildHeader(),
-            const SizedBox(height: 48), // Main Content - Split Layout
+            const SizedBox(height: 48),
+            // Main Content - Split Layout with Animated Sections
             Container(
               constraints: const BoxConstraints(maxWidth: 1200),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Left Half - Professional Experience, Publications, and Tools
+                  // Left Half - Experience, Publications, and Tools
                   Expanded(
                     child: Column(
                       children: [
-                        ProfessionalExperienceSection(
-                          professionalExperience: professionalExperience,
-                        ),
-                        const SizedBox(height: 32),
-                        PublicationsSection(publications: publications),
-                        const SizedBox(height: 32),
-                        ToolsAndFrameworksSection(
-                          toolsAndFrameworks: toolsAndFrameworks,
-                        ),
+                        // Experience (Animation Index 0)
+                        if (showSections[0])
+                          AnimatedBuilder(
+                            animation: _animations[0],
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  0,
+                                  50 * (1 - _animations[0].value),
+                                ),
+                                child: Opacity(
+                                  opacity: _animations[0].value,
+                                  child: ProfessionalExperienceSection(
+                                    professionalExperience:
+                                        professionalExperience,
+                                    onSectionComplete: currentSectionIndex == 0
+                                        ? _onSectionComplete
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        if (showSections[0]) const SizedBox(height: 32),
+                        // Publications (Animation Index 3)
+                        if (showSections[3])
+                          AnimatedBuilder(
+                            animation: _animations[3],
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  0,
+                                  50 * (1 - _animations[3].value),
+                                ),
+                                child: Opacity(
+                                  opacity: _animations[3].value,
+                                  child: PublicationsSection(
+                                    publications: publications,
+                                    onSectionComplete: currentSectionIndex == 3
+                                        ? _onSectionComplete
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        if (showSections[3]) const SizedBox(height: 32),
+                        // Tools (Animation Index 5)
+                        if (showSections[5])
+                          AnimatedBuilder(
+                            animation: _animations[5],
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  0,
+                                  50 * (1 - _animations[5].value),
+                                ),
+                                child: Opacity(
+                                  opacity: _animations[5].value,
+                                  child: ToolsAndFrameworksSection(
+                                    toolsAndFrameworks: toolsAndFrameworks,
+                                    onSectionComplete: currentSectionIndex == 5
+                                        ? _onSectionComplete
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),
@@ -172,14 +299,74 @@ class CareerPage extends StatelessWidget {
                   Expanded(
                     child: Column(
                       children: [
-                        // Education
-                        EducationSection(degrees: degrees),
-                        const SizedBox(height: 32),
-                        // Languages
-                        LanguagesSection(languages: languages),
-                        const SizedBox(height: 32),
-                        // Fun Projects
-                        FunProjectsSection(funProjects: funProjects),
+                        // Education (Animation Index 1)
+                        if (showSections[1])
+                          AnimatedBuilder(
+                            animation: _animations[1],
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  0,
+                                  50 * (1 - _animations[1].value),
+                                ),
+                                child: Opacity(
+                                  opacity: _animations[1].value,
+                                  child: EducationSection(
+                                    degrees: degrees,
+                                    onSectionComplete: currentSectionIndex == 1
+                                        ? _onSectionComplete
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        if (showSections[1]) const SizedBox(height: 32),
+                        // Languages (Animation Index 2)
+                        if (showSections[2])
+                          AnimatedBuilder(
+                            animation: _animations[2],
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  0,
+                                  50 * (1 - _animations[2].value),
+                                ),
+                                child: Opacity(
+                                  opacity: _animations[2].value,
+                                  child: LanguagesSection(
+                                    languages: languages,
+                                    onSectionComplete: currentSectionIndex == 2
+                                        ? _onSectionComplete
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        if (showSections[2]) const SizedBox(height: 32),
+                        // Fun Projects (Animation Index 4)
+                        if (showSections[4])
+                          AnimatedBuilder(
+                            animation: _animations[4],
+                            builder: (context, child) {
+                              return Transform.translate(
+                                offset: Offset(
+                                  0,
+                                  50 * (1 - _animations[4].value),
+                                ),
+                                child: Opacity(
+                                  opacity: _animations[4].value,
+                                  child: FunProjectsSection(
+                                    funProjects: funProjects,
+                                    onSectionComplete: currentSectionIndex == 4
+                                        ? _onSectionComplete
+                                        : null,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),

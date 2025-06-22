@@ -1,13 +1,45 @@
 import 'package:flutter/material.dart';
 import 'tool_chip.dart';
 
-class ToolsAndFrameworksSection extends StatelessWidget {
+class ToolsAndFrameworksSection extends StatefulWidget {
   final List<Map<String, dynamic>> toolsAndFrameworks;
+  final VoidCallback? onSectionComplete;
 
   const ToolsAndFrameworksSection({
     super.key,
     required this.toolsAndFrameworks,
+    this.onSectionComplete,
   });
+
+  @override
+  State<ToolsAndFrameworksSection> createState() =>
+      _ToolsAndFrameworksSectionState();
+}
+
+class _ToolsAndFrameworksSectionState extends State<ToolsAndFrameworksSection> {
+  List<bool> showChips = [];
+
+  @override
+  void initState() {
+    super.initState();
+    showChips = List.filled(widget.toolsAndFrameworks.length, false);
+    _startSequentialAnimation();
+  }
+
+  void _startSequentialAnimation() async {
+    for (int i = 0; i < widget.toolsAndFrameworks.length; i++) {
+      if (mounted) {
+        setState(() => showChips[i] = true);
+        // Wait 150ms before showing next chip (tools are just names)
+        await Future.delayed(const Duration(milliseconds: 150));
+      }
+    }
+
+    // Notify parent that this section is complete
+    if (widget.onSectionComplete != null) {
+      widget.onSectionComplete!();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,9 +72,13 @@ class ToolsAndFrameworksSection extends StatelessWidget {
           Wrap(
             spacing: 12,
             runSpacing: 12,
-            children: toolsAndFrameworks
-                .map((tool) => ToolChip(tool: tool))
-                .toList(),
+            children: widget.toolsAndFrameworks.asMap().entries.map((entry) {
+              int index = entry.key;
+              Map<String, dynamic> tool = entry.value;
+              return showChips[index]
+                  ? ToolChip(tool: tool)
+                  : const SizedBox.shrink();
+            }).toList(),
           ),
         ],
       ),

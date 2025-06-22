@@ -1,10 +1,48 @@
 import 'package:flutter/material.dart';
 import 'language_card.dart';
 
-class LanguagesSection extends StatelessWidget {
+class LanguagesSection extends StatefulWidget {
   final List<Map<String, String>> languages;
+  final VoidCallback? onSectionComplete;
 
-  const LanguagesSection({super.key, required this.languages});
+  const LanguagesSection({
+    super.key,
+    required this.languages,
+    this.onSectionComplete,
+  });
+
+  @override
+  State<LanguagesSection> createState() => _LanguagesSectionState();
+}
+
+class _LanguagesSectionState extends State<LanguagesSection> {
+  List<bool> showCards = [];
+  int currentCardIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    showCards = List.filled(widget.languages.length, false);
+    _startSequentialAnimation();
+  }
+
+  void _startSequentialAnimation() async {
+    // Show first card immediately
+    if (currentCardIndex < widget.languages.length && mounted) {
+      setState(() => showCards[currentCardIndex] = true);
+    }
+  }
+
+  void _onCardAnimationComplete() {
+    // Move to next card when current one finishes
+    currentCardIndex++;
+    if (currentCardIndex < widget.languages.length && mounted) {
+      setState(() => showCards[currentCardIndex] = true);
+    } else if (widget.onSectionComplete != null) {
+      // All cards in this section are complete
+      widget.onSectionComplete!();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +72,21 @@ class LanguagesSection extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          ...languages.map(
-            (language) => Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: LanguageCard(language: language),
-            ),
-          ),
+          ...widget.languages.asMap().entries.map((entry) {
+            int index = entry.key;
+            Map<String, String> language = entry.value;
+            return showCards[index]
+                ? Padding(
+                    padding: const EdgeInsets.only(bottom: 16),
+                    child: LanguageCard(
+                      language: language,
+                      onAnimationComplete: index == currentCardIndex
+                          ? _onCardAnimationComplete
+                          : null,
+                    ),
+                  )
+                : const SizedBox.shrink();
+          }),
         ],
       ),
     );

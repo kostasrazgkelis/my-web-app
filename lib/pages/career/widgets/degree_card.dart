@@ -1,13 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:typewritertext/typewritertext.dart';
 
-class DegreeCard extends StatelessWidget {
+class DegreeCard extends StatefulWidget {
   final Map<String, String> degree;
+  final VoidCallback? onAnimationComplete;
 
-  const DegreeCard({super.key, required this.degree});
+  const DegreeCard({super.key, required this.degree, this.onAnimationComplete});
+
+  @override
+  State<DegreeCard> createState() => _DegreeCardState();
+}
+
+class _DegreeCardState extends State<DegreeCard> {
+  bool showTitle = false;
+  bool showInstitution = false;
+  bool showYear = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start title animation immediately
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) setState(() => showTitle = true);
+    });
+  }
+
+  void _onTitleComplete(TypeWriterValue value) {
+    if (mounted) setState(() => showInstitution = true);
+  }
+
+  void _onInstitutionComplete(TypeWriterValue value) {
+    if (mounted) setState(() => showYear = true);
+  }
+
+  void _onYearComplete(TypeWriterValue value) {
+    // Notify parent that this card's animation is complete
+    if (widget.onAnimationComplete != null) {
+      widget.onAnimationComplete!();
+    }
+  }
 
   IconData _getIcon() {
-    switch (degree['type']) {
+    switch (widget.degree['type']) {
       case 'Masters':
         return Icons.school;
       case 'Bachelor':
@@ -49,37 +83,43 @@ class DegreeCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                TypeWriter.text(
-                  degree['title']!,
-                  duration: const Duration(milliseconds: 100),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF143A52),
-                    height: 1.3,
+                if (showTitle)
+                  TypeWriter.text(
+                    widget.degree['title']!,
+                    duration: const Duration(milliseconds: 1),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    onFinished: _onTitleComplete,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF143A52),
+                      height: 1.3,
+                    ),
                   ),
-                ),
-                TypeWriter.text(
-                  degree['institution']!,
-                  duration: const Duration(milliseconds: 30),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 13, color: Color(0xFF6E828A)),
-                ),
-                TypeWriter.text(
-                  '${degree['yearStart']!} - ${degree['yearEnd']!}',
-                  duration: const Duration(milliseconds: 40),
-                  maintainSize: true,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: Color(0xFF6E828A),
-                    fontWeight: FontWeight.w500,
+                if (showInstitution)
+                  TypeWriter.text(
+                    widget.degree['institution']!,
+                    duration: const Duration(milliseconds: 1),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    onFinished: _onInstitutionComplete,
+                    style: TextStyle(fontSize: 13, color: Color(0xFF6E828A)),
                   ),
-                ),
+                if (showYear)
+                  TypeWriter.text(
+                    '${widget.degree['yearStart']!} - ${widget.degree['yearEnd']!}',
+                    duration: const Duration(milliseconds: 1),
+                    maintainSize: true,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    onFinished: _onYearComplete,
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Color(0xFF6E828A),
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
               ],
             ),
           ),
