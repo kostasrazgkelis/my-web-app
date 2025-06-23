@@ -125,6 +125,7 @@ class _ToolsAndFrameworksSectionState extends State<ToolsAndFrameworksSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
         color: Colors.white,
