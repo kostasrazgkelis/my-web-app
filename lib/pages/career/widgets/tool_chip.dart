@@ -4,9 +4,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class ToolChip extends StatelessWidget {
   final Map<String, dynamic> tool;
 
-  const ToolChip({super.key, required this.tool});  Widget _buildIcon() {
+  const ToolChip({super.key, required this.tool});
+  Widget _buildIcon() {
     final iconData = tool['icon'];
-    
+
     if (iconData is String && iconData.endsWith('.svg')) {
       // It's an SVG asset path
       try {
@@ -21,11 +22,7 @@ class ToolChip extends StatelessWidget {
               color: Color(0xFF143A52).withOpacity(0.1),
               borderRadius: BorderRadius.circular(9),
             ),
-            child: Icon(
-              Icons.code,
-              color: Color(0xFF143A52),
-              size: 12,
-            ),
+            child: Icon(Icons.code, color: Color(0xFF143A52), size: 12),
           ),
           fit: BoxFit.contain,
         );

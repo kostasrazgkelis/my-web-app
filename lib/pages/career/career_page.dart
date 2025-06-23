@@ -163,39 +163,55 @@ class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
           'This website is a fun project showcasing my skills and interests. It includes sections on my professional experience, education, languages, publications, fun projects, and tools/frameworks I use. ',
       'url': 'https://github.com/kostasrazgkelis/my-web-app',
       'keywords': 'Flutter, Web, Dart, Responsive Design, UI/UX',
-    },  ];  static const List<Map<String, dynamic>> programmingLanguages = [
+    },
+  ];
+  static const List<Map<String, dynamic>> programmingLanguages = [
     {'name': 'Java', 'icon': 'icons/toolsandframeworks/java.svg'},
     {'name': 'Python', 'icon': 'icons/toolsandframeworks/python.svg'},
     {'name': 'Dart', 'icon': 'icons/toolsandframeworks/dart.svg'},
     {'name': 'SQL', 'icon': Icons.storage},
-  ];  static const List<Map<String, dynamic>> frameworks = [
+  ];
+  static const List<Map<String, dynamic>> frameworks = [
     {'name': 'Spring Boot', 'icon': 'icons/toolsandframeworks/spring-boot.svg'},
     {'name': 'Django', 'icon': 'icons/toolsandframeworks/django.svg'},
     {'name': 'Flutter', 'icon': 'icons/toolsandframeworks/flutter.svg'},
-  ];  static const List<Map<String, dynamic>> versionControl = [
+  ];
+  static const List<Map<String, dynamic>> versionControl = [
     {'name': 'Git', 'icon': 'icons/toolsandframeworks/git.svg'},
     {'name': 'GitHub', 'icon': 'icons/toolsandframeworks/github.svg'},
     {'name': 'GitLab', 'icon': 'icons/toolsandframeworks/gitlab.svg'},
-  ];  static const List<Map<String, dynamic>> dataProcessing = [
-    {'name': 'Apache Spark', 'icon': 'icons/toolsandframeworks/apache-spark.svg'},
-    {'name': 'Hadoop', 'icon': 'icons/toolsandframeworks/hadoop-distributed-file-system.svg'},
-    {'name': 'Apache Kafka', 'icon': 'icons/toolsandframeworks/apache-kafka.svg'},
-
-  ];  static const List<Map<String, dynamic>> containerOrchestration = [
+  ];
+  static const List<Map<String, dynamic>> dataProcessing = [
+    {
+      'name': 'Apache Spark',
+      'icon': 'icons/toolsandframeworks/apache-spark.svg',
+    },
+    {
+      'name': 'Hadoop',
+      'icon': 'icons/toolsandframeworks/hadoop-distributed-file-system.svg',
+    },
+    {
+      'name': 'Apache Kafka',
+      'icon': 'icons/toolsandframeworks/apache-kafka.svg',
+    },
+  ];
+  static const List<Map<String, dynamic>> containerOrchestration = [
     {'name': 'Docker', 'icon': 'icons/toolsandframeworks/docker.svg'},
     {'name': 'Kubernetes', 'icon': 'icons/toolsandframeworks/kubernetes.svg'},
-  ];  static const List<Map<String, dynamic>> databases = [
+  ];
+  static const List<Map<String, dynamic>> databases = [
     {'name': 'MySQL', 'icon': 'icons/toolsandframeworks/mysql.svg'},
     {'name': 'PostgreSQL', 'icon': 'icons/toolsandframeworks/postgresql.svg'},
     {'name': 'MongoDB', 'icon': 'icons/toolsandframeworks/mongodb.svg'},
     {'name': 'Firebase', 'icon': 'icons/toolsandframeworks/firebase.svg'},
-  ];  static const List<Map<String, dynamic>> cicdDevOps = [
+  ];
+  static const List<Map<String, dynamic>> cicdDevOps = [
     {'name': 'GitHub Actions', 'icon': 'icons/toolsandframeworks/github.svg'},
-    {'name': 'GitLab CI/CD', 'icon': 'icons/toolsandframeworks/gitlab.svg'}
+    {'name': 'GitLab CI/CD', 'icon': 'icons/toolsandframeworks/gitlab.svg'},
   ];
   static const List<Map<String, dynamic>> operatingSystems = [
     {'name': 'Linux', 'icon': 'icons/toolsandframeworks/linux.svg'},
-    {'name': 'Ubuntu', 'icon': 'icons/toolsandframeworks/ubuntu.svg'}
+    {'name': 'Ubuntu', 'icon': 'icons/toolsandframeworks/ubuntu.svg'},
   ];
 
   @override
@@ -277,12 +293,14 @@ class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
                                   50 * (1 - _animations[5].value),
                                 ),
                                 child: Opacity(
-                                  opacity: _animations[5].value,                                  child: ToolsAndFrameworksSection(
+                                  opacity: _animations[5].value,
+                                  child: ToolsAndFrameworksSection(
                                     programmingLanguages: programmingLanguages,
                                     frameworks: frameworks,
                                     versionControl: versionControl,
                                     dataProcessing: dataProcessing,
-                                    containerOrchestration: containerOrchestration,
+                                    containerOrchestration:
+                                        containerOrchestration,
                                     databases: databases,
                                     cicdDevOps: cicdDevOps,
                                     operatingSystems: operatingSystems,

@@ -50,7 +50,9 @@ class _FunProjectCardState extends State<FunProjectCard> {
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $urlString');
     }
-  }  @override
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -63,7 +65,10 @@ class _FunProjectCardState extends State<FunProjectCard> {
           decoration: BoxDecoration(
             color: Color(0xFFCDE3EB).withOpacity(0.3),
             borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
+            border: Border.all(
+              color: Color(0xFF143A52).withOpacity(0.1),
+              width: 1,
+            ),
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,7 +121,11 @@ class _FunProjectCardState extends State<FunProjectCard> {
                     if (showKeywords)
                       Row(
                         children: [
-                          Icon(Icons.local_offer, size: 14, color: Color(0xFF6E828A)),
+                          Icon(
+                            Icons.local_offer,
+                            size: 14,
+                            color: Color(0xFF6E828A),
+                          ),
                           const SizedBox(width: 4),
                           Expanded(
                             child: TypeWriter.text(
