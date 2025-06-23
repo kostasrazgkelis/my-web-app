@@ -1,30 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_web_app/widgets/app_layout.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ContactPage extends StatelessWidget {
+class ContactPage extends StatefulWidget {
   const ContactPage({super.key});
+
+  @override
+  State<ContactPage> createState() => _ContactPageState();
+}
+
+class _ContactPageState extends State<ContactPage> {
+  final Map<String, bool> _hoveringStates = {};
+
+  // URL launcher function
+  Future<void> _launchUrl(String urlString) async {
+    final Uri url = Uri.parse(urlString);
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $urlString');
+    }
+  }
 
   // Data dictionaries
   static const List<Map<String, dynamic>> contactInfo = [
-    {'icon': Icons.email, 'title': 'Email', 'value': 'contact@portfolio.com'},
-    {'icon': Icons.phone, 'title': 'Phone', 'value': '+1 (555) 123-4567'},
+    {'icon': Icons.email, 'title': 'Email', 'value': 'k.razgkelis@outlook.com'},
+    {'icon': Icons.phone, 'title': 'Phone', 'value': '+30 (123) 456-7890'},
     {
       'icon': Icons.location_on,
       'title': 'Location',
-      'value': 'Your City, Country',
+      'value': 'Thessaloniki, Greece',
     },
   ];
-
   static const List<Map<String, dynamic>> socialMedia = [
     {
-      'icon': Icons.link,
+      'icon': 'icons/contact/linkedin.svg',
       'platform': 'LinkedIn',
-      'url': 'https://linkedin.com/in/yourprofile',
+      'url': 'https://www.linkedin.com/in/kostasrazgkelis',
     },
     {
-      'icon': Icons.code,
+      'icon': 'icons/contact/github.svg',
       'platform': 'GitHub',
-      'url': 'https://github.com/yourusername',
+      'url': 'https://github.com/kostasrazgkelis',
     },
   ];
 
@@ -148,9 +164,9 @@ class ContactPage extends StatelessWidget {
           children: socialMedia
               .map(
                 (social) => _buildSocialButton(
-                  social['icon'],
-                  social['platform'],
-                  social['url'],
+                  social['icon'] as String,
+                  social['platform'] as String,
+                  social['url'] as String,
                 ),
               )
               .toList(),
@@ -270,27 +286,62 @@ class ContactPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialButton(IconData icon, String platform, String url) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        color: Color(0xFF6E828A).withOpacity(0.1),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Color(0xFF6E828A).withOpacity(0.3)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 18, color: Color(0xFF143A52)),
-          const SizedBox(width: 8),
-          Text(
-            platform,
-            style: TextStyle(
-              color: Color(0xFF143A52),
-              fontWeight: FontWeight.w500,
+  Widget _buildSocialButton(String iconPath, String platform, String url) {
+    final key = platform;
+    final isHovering = _hoveringStates[key] ?? false;
+
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _hoveringStates[key] = true),
+      onExit: (_) => setState(() => _hoveringStates[key] = false),
+      child: GestureDetector(
+        onTap: () => _launchUrl(url),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isHovering
+                ? Color(0xFF143A52).withOpacity(0.1)
+                : Color(0xFF6E828A).withOpacity(0.1),
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(
+              color: isHovering
+                  ? Color(0xFF143A52).withOpacity(0.5)
+                  : Color(0xFF6E828A).withOpacity(0.3),
             ),
+            boxShadow: isHovering
+                ? [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ]
+                : [],
           ),
-        ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                iconPath,
+                width: 18,
+                height: 18,
+                colorFilter: platform == 'LinkedIn'
+                    ? null
+                    : ColorFilter.mode(Color(0xFF143A52), BlendMode.srcIn),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                platform,
+                style: TextStyle(
+                  color: Color(0xFF143A52),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

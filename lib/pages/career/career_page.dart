@@ -143,10 +143,10 @@ class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
   static const List<Map<String, String>> publications = [
     {
       'title':
-          'Modern Flutter Development: Best Practices for Web Applications',
-      'publisher': 'IEEE Computer Society',
+          'PRES^3 : Private Record Linkage Using Services, Spark and Soundex',
+      'publisher': 'Springer Nature Link',
       'year': '2023',
-      'url': 'https://example.com/publication1',
+      'url': 'https://link.springer.com/chapter/10.1007/978-3-031-26507-5_37',
     },
   ];
   static const List<Map<String, String>> funProjects = [
