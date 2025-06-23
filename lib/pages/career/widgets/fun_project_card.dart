@@ -19,7 +19,7 @@ class FunProjectCard extends StatefulWidget {
 class _FunProjectCardState extends State<FunProjectCard> {
   bool showTitle = false;
   bool showDescription = false;
-  bool showLink = false;
+  bool showKeywords = false;
 
   @override
   void initState() {
@@ -35,10 +35,10 @@ class _FunProjectCardState extends State<FunProjectCard> {
   }
 
   void _onDescriptionComplete(TypeWriterValue value) {
-    if (mounted) setState(() => showLink = true);
+    if (mounted) setState(() => showKeywords = true);
   }
 
-  void _onLinkComplete(TypeWriterValue value) {
+  void _onKeywordsComplete(TypeWriterValue value) {
     // Notify parent that this card's animation is complete
     if (widget.onAnimationComplete != null) {
       widget.onAnimationComplete!();
@@ -50,95 +50,97 @@ class _FunProjectCardState extends State<FunProjectCard> {
     if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       throw Exception('Could not launch $urlString');
     }
-  }
-
-  @override
+  }  @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Color(0xFFCDE3EB).withOpacity(0.3),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xFF143A52).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(6),
-            ),
-            child: Icon(Icons.code, color: Color(0xFF143A52), size: 20),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: () {
+          _launchUrl(widget.project['url']!);
+        },
+        child: Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Color(0xFFCDE3EB).withOpacity(0.3),
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
           ),
-          const SizedBox(width: 12),
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (showTitle)
-                  GestureDetector(
-                    onTap: () {
-                      _launchUrl(widget.project['url']!);
-                    },
-                    child: TypeWriter.text(
-                      widget.project['title']!,
-                      duration: const Duration(milliseconds: 1),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      onFinished: _onTitleComplete,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF143A52),
-                        decoration: TextDecoration.underline,
-                        height: 1.3,
-                      ),
-                    ),
-                  ),
-                const SizedBox(height: 4),
-                if (showDescription)
-                  TypeWriter.text(
-                    widget.project['description']!,
-                    duration: const Duration(milliseconds: 1),
-                    maxLines: 4,
-                    overflow: TextOverflow.ellipsis,
-                    onFinished: _onDescriptionComplete,
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Color(0xFF6E828A),
-                      height: 1.4,
-                    ),
-                  ),
-                const SizedBox(height: 8),
-                if (showLink)
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.link, size: 14, color: Color(0xFF6E828A)),
-                      const SizedBox(width: 4),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFF143A52).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Icon(Icons.code, color: Color(0xFF143A52), size: 20),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (showTitle)
                       TypeWriter.text(
-                        'View Project',
+                        widget.project['title']!,
                         duration: const Duration(milliseconds: 1),
-                        maintainSize: true,
-                        maxLines: 1,
+                        maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        onFinished: _onLinkComplete,
+                        onFinished: _onTitleComplete,
                         style: TextStyle(
-                          fontSize: 10,
-                          color: Color(0xFF6E828A),
-                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF143A52),
+                          decoration: TextDecoration.underline,
+                          height: 1.3,
                         ),
                       ),
-                    ],
-                  ),
-              ],
-            ),
+                    const SizedBox(height: 4),
+                    if (showDescription)
+                      TypeWriter.text(
+                        widget.project['description']!,
+                        duration: const Duration(milliseconds: 1),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
+                        onFinished: _onDescriptionComplete,
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF6E828A),
+                          height: 1.4,
+                        ),
+                      ),
+                    const SizedBox(height: 8),
+                    if (showKeywords)
+                      Row(
+                        children: [
+                          Icon(Icons.local_offer, size: 14, color: Color(0xFF6E828A)),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: TypeWriter.text(
+                              widget.project['keywords']!,
+                              duration: const Duration(milliseconds: 1),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              onFinished: _onKeywordsComplete,
+                              style: TextStyle(
+                                fontSize: 10,
+                                color: Color(0xFF6E828A),
+                                fontWeight: FontWeight.w500,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

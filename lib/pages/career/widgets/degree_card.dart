@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:typewritertext/typewritertext.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DegreeCard extends StatefulWidget {
   final Map<String, String> degree;
@@ -40,16 +41,40 @@ class _DegreeCardState extends State<DegreeCard> {
     }
   }
 
-  IconData _getIcon() {
+  String _getIconAsset() {
     switch (widget.degree['type']) {
       case 'Masters':
-        return Icons.school;
+        return 'icons/education/auth.png';
       case 'Bachelor':
-        return Icons.menu_book;
+        return 'icons/education/uom.jpeg';
       case 'Certificate':
-        return Icons.verified;
+        return 'icons/education/certificate.svg';
+      case 'Derby':
+        return 'icons/education/derby.jpeg';
       default:
-        return Icons.school;
+        return 'icons/education/uom.jpeg';
+    }
+  }
+
+  bool _isSvg() {
+    return _getIconAsset().endsWith('.svg');
+  }
+
+  Widget _buildIcon() {
+    if (_isSvg()) {
+      return SvgPicture.asset(
+        _getIconAsset(),
+        colorFilter: ColorFilter.mode(Color(0xFF143A52), BlendMode.srcIn),
+        width: 40,
+        height: 40,
+      );
+    } else {
+      return Image.asset(
+        _getIconAsset(),
+        width: 60,
+        height: 60,
+        fit: BoxFit.cover,
+      );
     }
   }
 
@@ -64,16 +89,19 @@ class _DegreeCardState extends State<DegreeCard> {
         border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
       ),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Color(0xFF143A52).withOpacity(0.1),
-              borderRadius: BorderRadius.circular(10),
+              color: Colors.white,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Color(0xFF143A52).withOpacity(0.2),
+                width: 1,
+              ),
             ),
-            child: Icon(_getIcon(), color: Color(0xFF143A52), size: 22),
+            child: ClipOval(child: Center(child: _buildIcon())),
           ),
           const SizedBox(width: 24),
           Expanded(

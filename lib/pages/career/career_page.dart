@@ -101,43 +101,42 @@ class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
 
   static const List<Map<String, String>> degrees = [
     {
-      'title': 'Master of Computer Science',
-      'institution': 'University of Technology',
-      'year': '2018',
-      'yearStart': '2016',
-      'yearEnd': '2018',
+      'title': 'M.Sc. Data and Web Science',
+      'institution': 'Aristotle University of Thessaloniki',
+      'year': '2022',
+      'yearStart': '2022',
+      'yearEnd': 'present',
       'type': 'Masters',
     },
     {
-      'title': 'Bachelor of Software Engineering',
-      'institution': 'Institute of Technology',
+      'title': 'B.Sc. Applied Informatics',
+      'institution': 'University of Macedonia',
       'year': '2016',
-      'yearStart': '2012',
-      'yearEnd': '2016',
+      'yearStart': '2016',
+      'yearEnd': '2022',
       'type': 'Bachelor',
     },
     {
-      'title': 'Flutter Development Certification',
-      'institution': 'Google Developers',
-      'year': '2020',
-      'yearStart': '2020',
+      'title': 'Erasmus: Computer Science',
+      'institution': 'University of Derby',
+      'year': '2019',
+      'yearStart': '2019',
       'yearEnd': '2020',
-      'type': 'Certificate',
+      'type': 'Derby',
     },
   ];
-
   static const List<Map<String, String>> languages = [
     {
       'language': 'English',
-      'level': 'Native',
+      'level': 'C2',
       'flag': '🇺🇸',
-      'degree': 'Native Speaker',
+      'degree': 'Advanced Proficiency',
     },
     {
-      'language': 'Spanish',
-      'level': 'C2',
-      'flag': '🇪🇸',
-      'degree': 'Advanced Proficiency',
+      'language': 'Greek',
+      'level': 'Native',
+      'flag': '🇬🇷',
+      'degree': 'Native Speaker',
     },
   ];
 
@@ -149,39 +148,21 @@ class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
       'year': '2023',
       'url': 'https://example.com/publication1',
     },
-    {
-      'title':
-          'Cross-Platform Mobile Development with Flutter: A Comprehensive Study',
-      'publisher': 'ACM Digital Library',
-      'year': '2022',
-      'url': 'https://example.com/publication2',
-    },
-    {
-      'title': 'Responsive Web Design Patterns in Modern Frameworks',
-      'publisher': 'Journal of Web Development',
-      'year': '2021',
-      'url': 'https://example.com/publication3',
-    },
   ];
-
   static const List<Map<String, String>> funProjects = [
     {
-      'title': 'Portfolio Weather App',
+      'title': 'Spark on Kubernetes',
       'description':
-          'A beautiful weather application built with Flutter featuring real-time weather data, animated backgrounds, and location-based forecasts.',
-      'url': 'https://github.com/yourprofile/weather-app',
+          'A scalable Apache Spark cluster deployed on Kubernetes using Helm. Includes custom Spark configurations, persistent storage, and dynamic executor scaling. Designed for efficient big data processing in a cloud-native environment.',
+      'url': 'https://github.com/kostasrazgkelis/spark-on-k8s-cluster',
+      'keywords': 'Spark, Kubernetes, Docker, Helm, Big Data, Scala',
     },
     {
-      'title': 'Recipe Finder',
+      'title': 'My Web Page',
       'description':
-          'Interactive recipe discovery platform with ingredient-based search, meal planning, and nutritional information using modern web technologies.',
-      'url': 'https://github.com/yourprofile/recipe-finder',
-    },
-    {
-      'title': 'Task Management Dashboard',
-      'description':
-          'Collaborative task management tool with real-time updates, team collaboration features, and productivity analytics.',
-      'url': 'https://github.com/yourprofile/task-dashboard',
+          'This website is a fun project showcasing my skills and interests. It includes sections on my professional experience, education, languages, publications, fun projects, and tools/frameworks I use. ',
+      'url': 'https://github.com/kostasrazgkelis/my-web-app',
+      'keywords': 'Flutter, Web, Dart, Responsive Design, UI/UX',
     },
   ];
 
