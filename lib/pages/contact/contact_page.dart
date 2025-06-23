@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_web_app/widgets/app_layout.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -260,26 +261,55 @@ class _ContactPageState extends State<ContactPage> {
             child: Icon(icon, color: Colors.white, size: 20),
           ),
           const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF6E828A),
-                  fontWeight: FontWeight.w500,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF6E828A),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-              Text(
-                value,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF143A52),
-                  fontWeight: FontWeight.w600,
+                Text(
+                  value,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Color(0xFF143A52),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          MouseRegion(
+            cursor: SystemMouseCursors.click,
+            child: GestureDetector(
+              onTap: () async {
+                await Clipboard.setData(ClipboardData(text: value));
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('$title copied to clipboard!'),
+                      duration: Duration(seconds: 2),
+                      backgroundColor: Color(0xFF143A52),
+                    ),
+                  );
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFF6E828A).withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: Color(0xFF6E828A).withOpacity(0.3)),
+                ),
+                child: Icon(Icons.copy, size: 16, color: Color(0xFF143A52)),
               ),
-            ],
+            ),
           ),
         ],
       ),
