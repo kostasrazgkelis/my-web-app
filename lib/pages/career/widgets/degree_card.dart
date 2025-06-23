@@ -16,11 +16,38 @@ class _DegreeCardState extends State<DegreeCard> {
   bool showTitle = false;
   bool showInstitution = false;
   bool showYear = false;
+  bool iconLoaded = false;
 
   @override
   void initState() {
     super.initState();
-    // Start title animation immediately
+    _preloadIcon();
+  }
+
+  void _preloadIcon() async {
+    if (_isSvg()) {
+      // For SVG, we can start the animation immediately as SVGs load quickly
+      _startAnimation();
+    } else {
+      // For image assets, preload them first
+      try {
+        await precacheImage(AssetImage(_getIconAsset()), context);
+        if (mounted) {
+          setState(() => iconLoaded = true);
+          _startAnimation();
+        }
+      } catch (e) {
+        // If preloading fails, start animation anyway
+        if (mounted) {
+          setState(() => iconLoaded = true);
+          _startAnimation();
+        }
+      }
+    }
+  }
+
+  void _startAnimation() {
+    // Start title animation
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) setState(() => showTitle = true);
     });
@@ -61,6 +88,28 @@ class _DegreeCardState extends State<DegreeCard> {
   }
 
   Widget _buildIcon() {
+    if (!iconLoaded && !_isSvg()) {
+      // Show a placeholder while image is loading
+      return Container(
+        width: 60,
+        height: 60,
+        decoration: BoxDecoration(
+          color: Color(0xFF143A52).withOpacity(0.1),
+          borderRadius: BorderRadius.circular(30),
+        ),
+        child: Center(
+          child: SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF143A52)),
+            ),
+          ),
+        ),
+      );
+    }
+
     if (_isSvg()) {
       return SvgPicture.asset(
         _getIconAsset(),
@@ -74,6 +123,14 @@ class _DegreeCardState extends State<DegreeCard> {
         width: 60,
         height: 60,
         fit: BoxFit.cover,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          if (wasSynchronouslyLoaded) return child;
+          return AnimatedOpacity(
+            opacity: frame == null ? 0 : 1,
+            duration: const Duration(milliseconds: 200),
+            child: child,
+          );
+        },
       );
     }
   }
