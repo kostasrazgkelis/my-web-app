@@ -57,26 +57,10 @@ class _ExperienceCardState extends State<ExperienceCard> {
         color: Color(0xFFCDE3EB).withOpacity(0.3),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Color(0xFF143A52).withOpacity(0.1), width: 1),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.max,
+      ),      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Color(0xFF143A52),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(widget.job['icon'], color: Colors.white, size: 24),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.min,
-              children: [
                 if (showTitle)
                   TypeWriter.text(
                     widget.job['title'],
@@ -128,12 +112,8 @@ class _ExperienceCardState extends State<ExperienceCard> {
                       fontSize: 13,
                       color: Color(0xFF6E828A),
                       height: 1.4,
-                    ),
-                  ),
+                    ),                  ),
               ],
-            ),
-          ),
-        ],
       ),
     );
   }

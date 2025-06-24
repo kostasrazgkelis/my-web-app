@@ -126,16 +126,16 @@ class _FunProjectCardState extends State<FunProjectCard> {
                           TypeWriter.text(
                             widget.project['description']!,
                             duration: const Duration(milliseconds: 1),
-                            maxLines: 7,
-                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                            overflow: TextOverflow.visible,
                             onFinished: _onDescriptionComplete,
                             style: TextStyle(
                               fontSize: 12,
                               color: Color(0xFF6E828A),
-                              height: 1.4,
+                              height: 1.1,
                             ),
                           ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 16),
                         if (showKeywords)
                           Row(
                             children: [

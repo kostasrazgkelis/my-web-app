@@ -75,27 +75,21 @@ class _CareerPageState extends State<CareerPage> with TickerProviderStateMixin {
   static const List<Map<String, dynamic>> professionalExperience = [
     {
       'title': 'Senior Software Developer',
-      'company': 'Tech Innovations Ltd.',
+      'company': 'Onelity',
       'period': '2022 - Present',
-      'description':
-          'Leading development of enterprise web applications using Flutter and modern frameworks. Mentoring junior developers and architecting scalable solutions.',
-      'icon': Icons.work_outline,
-    },
-    {
-      'title': 'Full Stack Developer',
-      'company': 'Digital Solutions Inc.',
-      'period': '2020 - 2022',
-      'description':
-          'Developed and maintained full-stack applications using React, Node.js, and Flutter. Implemented responsive designs and optimized performance.',
-      'icon': Icons.code,
+      'description': "- Developed web applications using Java and Spring Boot. \n"
+"- Contributed to the implementation of a large-scale test automation pipeline, focusing on building robust and maintainable test suites.",
     },
     {
       'title': 'Junior Developer',
-      'company': 'StartUp Ventures',
-      'period': '2018 - 2020',
+      'company': 'Onelity',
+      'period': '2022 - 2024',
       'description':
-          'Started career focusing on front-end development and user experience design. Contributed to multiple successful mobile and web projects.',
-      'icon': Icons.school,
+          "- Primarily focused on backend development with Python and Django. \n"
+          "- Designed and implemented a scalable data processing pipeline for a large-scale analytics project, "
+          "leveraging Pandas for data manipulation and Celery for asynchronous task execution. \n"
+          "- Deployed on docker and kubernetes containers.",
+          
     },
   ];
 
